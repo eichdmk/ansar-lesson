@@ -26,6 +26,13 @@ const pool = new Pool({
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const clientBuildPath = path.join(__dirname, "../client/dist");
+app.use(express.static(clientBuildPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(clientBuildPath, "index.html"));
+});
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = 'uploads'
@@ -120,6 +127,6 @@ app.delete('/products/:id', async (req, res) => {
     }
 })
 
-app.listen(3000, ()=>{
+app.listen(8080, ()=>{
     console.log('Сервер запущен')
 })
