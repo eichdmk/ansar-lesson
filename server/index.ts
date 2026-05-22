@@ -29,10 +29,12 @@ const __dirname = path.dirname(__filename)
 const clientBuildPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientBuildPath));
 
-app.get(/(.*)/, (req, res) => {
+app.get('{*splat}', (req, res, next) => {
+    if (path.extname(req.path)) {
+        return next();
+    }
     res.sendFile(path.join(clientBuildPath, "index.html"));
 });
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = 'uploads'
