@@ -29,7 +29,7 @@ const __dirname = path.dirname(__filename)
 const clientBuildPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientBuildPath));
 
-app.get('{*splat}', (req, res, next) => {
+app.get('*', (req, res, next) => {
     if (path.extname(req.path)) {
         return next();
     }
