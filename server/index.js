@@ -21,9 +21,7 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientBuildPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientBuildPath));
-app.get(/(.*)/, (req, res) => {
-    res.sendFile(path.join(clientBuildPath, "index.html"));
-});
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = 'uploads';
@@ -99,6 +97,11 @@ app.delete('/products/:id', async (req, res) => {
         res.status(500).json({ error: 'Ошибка сервера' });
     }
 });
+
+app.get(/(.*)/, (req, res) => {
+    res.sendFile(path.join(clientBuildPath, "index.html"));
+});
+
 app.listen(8080, () => {
     console.log('Сервер запущен');
 });
