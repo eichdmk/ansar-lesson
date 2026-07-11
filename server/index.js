@@ -21,13 +21,16 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientBuildPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientBuildPath));
-
+// 1. Исправленный блок конфигурации хранилища Multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = 'uploads';
+        // Создаем абсолютный путь: папка uploads появится прямо рядом с файлом сервера
+        const uploadDir = path.join(__dirname, 'uploads');
+
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
+
         cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
@@ -36,7 +39,10 @@ const storage = multer.diskStorage({
     }
 });
 const uploads = multer({ storage });
+
+// 2. Раздача статики (остается без изменений, теперь пути совпадают)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.get('/products', async (req, res) => {
     try {
         const { rows } = await pool.query("SELECT * FROM products");
