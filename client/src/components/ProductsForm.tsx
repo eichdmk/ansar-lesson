@@ -37,7 +37,7 @@ export default function ProductsForm() {
         formdata.append('name', name)
         formdata.append('description', description)
         formdata.append('price', String(price))
-        formdata.append('image', String(file))
+        formdata.append('image', file as File)
 
         if (selectedProduct) {
             const { data } = await axios.put(API + '/products/' + selectedProduct.id, formdata)

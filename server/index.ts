@@ -22,23 +22,21 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD
 })
 
-
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+// const clientBuildPath = path.join(__dirname, "../client/dist");
+// app.use(express.static(clientBuildPath));
 
-const clientBuildPath = path.join(__dirname, "../client/dist");
-app.use(express.static(clientBuildPath));
-
-app.get('*', (req, res, next) => {
-    if (path.extname(req.path)) {
-        return next();
-    }
-    res.sendFile(path.join(clientBuildPath, "index.html"));
-});
+// app.get('*', (req, res, next) => {
+//     if (path.extname(req.path)) {
+//         return next();
+//     }
+//     res.sendFile(path.join(clientBuildPath, "index.html"));
+// });
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = 'uploads'
-
+        
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true })
         }
