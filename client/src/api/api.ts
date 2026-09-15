@@ -1,1 +1,1 @@
-export const API = 'http://82.21.117.91:8080'
+export const API = import.meta.env.VITE_URL
